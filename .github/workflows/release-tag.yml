@@ -1,0 +1,22 @@
+name: release-tag
+on:
+  push:
+    tags:
+      - "**"
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      # https://github.com/actions/github-script
+      - uses: actions/github-script@v6
+        with:
+          # https://octokit.github.io/rest.js/v18#repos-create-release
+          script: |
+            github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: github.ref_name,
+              prerelease: !github.ref_name.match(/\d+\.\d+\.\d+$/)
+              body: 'Please see the [changelog](https://zero-to-jupyterhub.readthedocs.io/en/latest/changelog.html) for details.'
+            });
