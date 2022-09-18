@@ -19,6 +19,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               tag_name: github.ref_name,
-              prerelease: !github.ref_name.match(/\d+\.\d+\.\d+$/)
+              prerelease: !github.ref_name.match(/\d+\.\d+\.\d+$/),
               body: 'Please see the [changelog](https://zero-to-jupyterhub.readthedocs.io/en/latest/changelog.html) for details.'
             });
