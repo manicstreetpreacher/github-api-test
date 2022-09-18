@@ -7,6 +7,8 @@ on:
 jobs:
   create-release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       # https://github.com/actions/github-script
       - uses: actions/github-script@v6
