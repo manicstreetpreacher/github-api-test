@@ -1,24 +1,40 @@
 name: release-tag
 on:
   push:
-    tags:
-      - "**"
+#     tags:
+#       - "**"
+
+# jobs:
+#   create-release:
+#     runs-on: ubuntu-latest
+#     permissions:
+#       contents: write
+#     steps:
+#       # https://github.com/actions/github-script
+#       - uses: actions/github-script@v6
+#         with:
+#           # https://octokit.github.io/rest.js/v18#repos-create-release
+#           script: |
+#             github.rest.repos.createRelease({
+#               owner: context.repo.owner,
+#               repo: context.repo.repo,
+#               tag_name: github.ref_name,
+#               prerelease: !github.ref_name.match(/\d+\.\d+\.\d+$/),
+#               body: 'Please see the [changelog](https://zero-to-jupyterhub.readthedocs.io/en/latest/changelog.html) for details.'
+#             });
+
 
 jobs:
-  create-release:
+  debug:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
     steps:
       # https://github.com/actions/github-script
       - uses: actions/github-script@v6
         with:
-          # https://octokit.github.io/rest.js/v18#repos-create-release
           script: |
-            github.rest.repos.createRelease({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: github.ref_name,
-              prerelease: !github.ref_name.match(/\d+\.\d+\.\d+$/),
-              body: 'Please see the [changelog](https://zero-to-jupyterhub.readthedocs.io/en/latest/changelog.html) for details.'
-            });
+            console.log(context)
+            if (!context.ref.startsWith('refs/tags/')) {
+              core.setFailed(`${context.ref} is not in the form refs/tags/$tag`)
+            }
+            let tag = context.ref.slice(10)
+            console.log(tag)
