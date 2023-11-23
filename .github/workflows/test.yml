@@ -1,0 +1,21 @@
+name: test
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # https://github.com/jupyterhub/action-major-minor-tag-calculator
+      - name: Get all relevant tags
+        id: gettags
+        uses: jupyterhub/action-major-minor-tag-calculator@main
+        with:
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          prefix: "test:"
+
+      - run: echo ${{ steps.gettags.outputs.tags }}
